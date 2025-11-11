@@ -1,0 +1,18 @@
+{
+  "name": "ftp-upload-api",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API server for FTP image uploads",
+  "main": "ftp-upload-api.js",
+  "scripts": {
+    "start": "node ftp-upload-api.js",
+    "dev": "node --watch ftp-upload-api.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "basic-ftp": "^5.0.3",
+    "cors": "^2.8.5"
+  }
+}
+

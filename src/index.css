@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+    font-family: 'Archivo', sans-serif;
+  }
+  
+  button:not(:disabled) {
+    @apply cursor-pointer;
+  }
+  
+  a {
+    @apply cursor-pointer;
+  }
+  
+  [role="button"] {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    background-color: #123F6D;
+    @apply text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer;
+  }
+  .btn-primary:hover {
+    background-color: #255086;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer;
+  }
+  
+  .btn-accent {
+    background-color: #ED145B;
+    @apply text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer;
+  }
+  .btn-accent:hover {
+    background-color: #b71646;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-900 focus:border-transparent outline-none transition-all;
+  }
+}
+
