@@ -61,7 +61,6 @@ export function AuthProvider({ children }) {
           setIsAdmin(data.isAdmin !== undefined ? data.isAdmin : adminStatus)
         }
       } catch (error) {
-        console.error('Erro ao atualizar dados do usuário:', error)
       }
     }
   }
@@ -98,7 +97,6 @@ export function AuthProvider({ children }) {
             setLoading(false)
           },
           (error) => {
-            console.error('Erro ao escutar dados do usuário:', error)
             setLoading(false)
           }
         )

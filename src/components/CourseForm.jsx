@@ -99,7 +99,6 @@ export default function CourseForm({ course, onSubmit, onCancel }) {
       
       setUseUpload(true)
     } catch (error) {
-      console.error('Erro ao fazer upload:', error)
       // Mostrar mensagem de erro mais detalhada
       const errorMessage = error.message || 'Erro ao fazer upload da imagem. Tente novamente.'
       setError(errorMessage)

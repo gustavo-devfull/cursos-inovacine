@@ -39,8 +39,6 @@ export default function Dashboard() {
         const allCourses = []
         const enrolledIds = userData.enrolledCourses || []
         
-        console.log('IDs inscritos:', enrolledIds)
-        console.log('Total de IDs:', enrolledIds.length)
         
         querySnapshot.forEach((doc) => {
           if (enrolledIds.includes(doc.id)) {
@@ -48,10 +46,8 @@ export default function Dashboard() {
           }
         })
         
-        console.log('Cursos encontrados:', allCourses.length)
         setEnrolledCourses(allCourses)
       } catch (error) {
-        console.error('Erro ao buscar cursos inscritos:', error)
         setEnrolledCourses([])
       } finally {
         setLoading(false)
@@ -93,7 +89,6 @@ export default function Dashboard() {
       showAlert('Inscrição cancelada com sucesso!', 'success')
       setCourseToUnenroll(null)
     } catch (error) {
-      console.error('Erro ao cancelar inscrição:', error)
       showAlert('Erro ao cancelar inscrição', 'error')
     }
   }
@@ -101,10 +96,10 @@ export default function Dashboard() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">
+        <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2">
           Olá, {userData?.name || 'Usuário'}!
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Gerencie seus cursos e continue aprendendo
         </p>
       </div>
@@ -114,13 +109,13 @@ export default function Dashboard() {
         <div className="card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Cursos Inscritos</p>
-              <p className="text-3xl font-bold text-gray-800 mt-2">
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Cursos Inscritos</p>
+              <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mt-2">
                 {enrolledCourses.length}
               </p>
             </div>
-            <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6 text-primary-900 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-primary-900 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
@@ -129,13 +124,13 @@ export default function Dashboard() {
         <div className="card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Email</p>
-              <p className="text-lg font-semibold text-gray-800 mt-2 truncate">
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Email</p>
+              <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-2 truncate">
                 {currentUser?.email}
               </p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
@@ -144,10 +139,10 @@ export default function Dashboard() {
         <div className="card p-6">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <p className="text-gray-600 text-sm">Dados de Cadastro</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Dados de Cadastro</p>
               <button
                 onClick={() => setShowEditModal(true)}
-                className="mt-2 text-primary-900 hover:text-primary-800 font-semibold text-sm flex items-center space-x-1"
+                className="mt-2 text-primary-900 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-semibold text-sm flex items-center space-x-1"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -155,8 +150,8 @@ export default function Dashboard() {
                 <span>Editar Dados</span>
               </button>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
@@ -167,16 +162,16 @@ export default function Dashboard() {
       {/* Enrolled Courses */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Meus Cursos</h2>
-          <Link to="/cursos" className="text-primary-900 hover:text-primary-800 font-semibold">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Meus Cursos</h2>
+          <Link to="/cursos" className="text-primary-900 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-semibold">
             Explorar mais cursos →
           </Link>
         </div>
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-900 "></div>
-            <p className="mt-4 text-gray-600">Carregando cursos...</p>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-900 dark:border-primary-400"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">Carregando cursos...</p>
           </div>
         ) : enrolledCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -190,13 +185,13 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="card p-12 text-center">
-            <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
               Você ainda não está inscrito em nenhum curso
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               Explore nossa coleção de cursos e comece a aprender hoje!
             </p>
             <Link to="/cursos" className="btn-primary inline-block">

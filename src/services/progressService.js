@@ -35,7 +35,6 @@ export async function markLessonAsWatched(userId, courseId, lessonIndex) {
     
     return true
   } catch (error) {
-    console.error('Erro ao marcar aula como assistida:', error)
     throw error
   }
 }
@@ -55,7 +54,6 @@ export async function isLessonWatched(userId, courseId, lessonIndex) {
     
     return false
   } catch (error) {
-    console.error('Erro ao verificar se aula foi assistida:', error)
     return false
   }
 }
@@ -74,7 +72,6 @@ export async function getWatchedLessons(userId, courseId) {
     
     return []
   } catch (error) {
-    console.error('Erro ao obter aulas assistidas:', error)
     return []
   }
 }
@@ -96,7 +93,6 @@ export async function getCourseProgress(userId, courseId) {
       lastWatched: null
     }
   } catch (error) {
-    console.error('Erro ao obter progresso do curso:', error)
     return {
       watchedLessons: [],
       lastWatched: null

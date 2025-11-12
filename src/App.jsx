@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { ThemeProvider } from '@material-tailwind/react'
+import { ThemeProvider as MTThemeProvider } from '@material-tailwind/react'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
 import { AlertProvider } from './contexts/AlertContext'
 import Header from './components/Header'
@@ -18,10 +19,11 @@ import AdminRoute from './components/AdminRoute'
 function App() {
   return (
     <ThemeProvider>
-      <AlertProvider>
-        <AuthProvider>
-          <Router>
-        <div className="min-h-screen flex flex-col">
+      <MTThemeProvider>
+        <AlertProvider>
+          <AuthProvider>
+            <Router>
+        <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
           <Header />
           <main className="flex-grow">
             <Routes>
@@ -52,8 +54,9 @@ function App() {
           <Footer />
         </div>
       </Router>
-        </AuthProvider>
-      </AlertProvider>
+          </AuthProvider>
+        </AlertProvider>
+      </MTThemeProvider>
     </ThemeProvider>
   )
 }

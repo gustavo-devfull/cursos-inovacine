@@ -4,8 +4,9 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 font-sans;
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans;
     font-family: 'Archivo', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   button:not(:disabled) {
@@ -23,31 +24,48 @@
 
 @layer components {
   .btn-primary {
-    background-color: #123F6D;
-    @apply text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer;
+    background: linear-gradient(135deg, #123F6D 0%, #0d2f4f 100%);
+    @apply text-white transition-all duration-200 cursor-pointer shadow-md;
+    padding: 10px 20px;
+    border-radius: 60px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
   }
   .btn-primary:hover {
-    background-color: #255086;
+    background: linear-gradient(135deg, #255086 0%, #123F6D 100%);
+    @apply shadow-lg transform scale-105;
   }
   
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer;
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition-colors duration-200 cursor-pointer;
+    padding: 10px 20px;
+    border-radius: 60px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
   }
   
   .btn-accent {
-    background-color: #ED145B;
-    @apply text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer;
+    background: linear-gradient(135deg, #ED145B 0%, #b71646 100%);
+    @apply text-white transition-all duration-200 cursor-pointer shadow-md;
+    padding: 10px 20px;
+    border-radius: 60px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
   }
   .btn-accent:hover {
-    background-color: #b71646;
+    background: linear-gradient(135deg, #f2437a 0%, #ED145B 100%);
+    @apply shadow-lg transform scale-105;
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900 hover:shadow-xl dark:hover:shadow-gray-800 transition-shadow duration-300 overflow-hidden;
   }
   
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-900 focus:border-transparent outline-none transition-all;
+    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-primary-900 focus:border-transparent outline-none transition-all;
   }
 }
 

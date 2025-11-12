@@ -7,6 +7,7 @@ import { useAlert } from '../contexts/AlertContext'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { convertToEmbedUrl } from '../utils/videoUtils'
 import { markLessonAsWatched, isLessonWatched, getWatchedLessons } from '../services/progressService'
+import CourseChat from '../components/CourseChat'
 
 function CourseContentPage() {
   const { courseId, lessonIndex } = useParams()
@@ -80,7 +81,6 @@ function CourseContentPage() {
           navigate('/cursos')
         }
       } catch (error) {
-        console.error('Erro ao buscar curso:', error)
       } finally {
         setLoading(false)
       }
@@ -130,7 +130,6 @@ function CourseContentPage() {
         return prev
       })
     } catch (error) {
-      console.error('Erro ao marcar aula como assistida:', error)
       showAlert('Erro ao marcar aula como assistida. Tente novamente.', 'error')
     } finally {
       setMarkingAsWatched(false)
@@ -251,11 +250,12 @@ function CourseContentPage() {
               <button
                 onClick={handleMarkAsWatched}
                 disabled={isWatched || markingAsWatched}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`flex items-center justify-center space-x-2 transition-colors ${
                   isWatched
                     ? 'bg-green-100 text-green-800 cursor-not-allowed'
                     : 'bg-primary-900 hover:bg-primary-800 text-white'
                 }`}
+                style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
               >
                 {isWatched ? (
                   <>
@@ -425,6 +425,11 @@ function CourseContentPage() {
               ))}
             </div>
           </div>
+
+          {/* Sistema de Conversa */}
+          {currentUser && (
+            <CourseChat courseId={courseId} />
+          )}
         </div>
       </div>
     </div>

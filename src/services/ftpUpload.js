@@ -30,8 +30,6 @@ export async function uploadImageToFTP(file) {
     // Por padrão, tenta usar a variável de ambiente ou o endpoint local
     const API_ENDPOINT = import.meta.env.VITE_FTP_UPLOAD_API || 'http://localhost:3001/api/upload-ftp'
     
-    console.log('Tentando fazer upload para:', API_ENDPOINT)
-    
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       body: formData
@@ -45,8 +43,7 @@ export async function uploadImageToFTP(file) {
           'Execute: npm run server:dev na raiz do projeto.'
         )
       }
-      const errorText = await response.text()
-      console.error('Resposta do servidor:', errorText)
+      await response.text()
       throw new Error(`Erro ao fazer upload: ${response.status} ${response.statusText}`)
     }
 
@@ -58,8 +55,6 @@ export async function uploadImageToFTP(file) {
     
     return data.url || data.imageUrl
   } catch (error) {
-    console.error('Erro no upload FTP:', error)
-    
     // Mensagens de erro mais específicas
     if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
       throw new Error(

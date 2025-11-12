@@ -29,7 +29,6 @@ export default function AdminDashboard() {
       })
       setCourses(coursesData)
     } catch (error) {
-      console.error('Erro ao buscar cursos:', error)
       setError('Erro ao carregar cursos')
     } finally {
       setLoading(false)
@@ -64,7 +63,6 @@ export default function AdminDashboard() {
       setShowForm(false)
       fetchCourses()
     } catch (error) {
-      console.error('Erro ao criar curso:', error)
       setError('Erro ao criar curso')
     }
   }
@@ -82,7 +80,6 @@ export default function AdminDashboard() {
       setShowForm(false)
       fetchCourses()
     } catch (error) {
-      console.error('Erro ao atualizar curso:', error)
       setError('Erro ao atualizar curso')
     }
   }
@@ -105,7 +102,6 @@ export default function AdminDashboard() {
       fetchCourses()
       setCourseToDelete(null)
     } catch (error) {
-      console.error('Erro ao excluir curso:', error)
       setError('Erro ao excluir curso')
     }
   }

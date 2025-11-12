@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useAlert } from '../contexts/AlertContext'
 import EnrollmentModal from '../components/EnrollmentModal'
 import ConfirmDialog from '../components/ConfirmDialog'
+import CourseChat from '../components/CourseChat'
 
 export default function CourseDetail() {
   const { id } = useParams()
@@ -33,7 +34,6 @@ export default function CourseDetail() {
           navigate('/cursos')
         }
       } catch (error) {
-        console.error('Erro ao buscar curso:', error)
       } finally {
         setLoading(false)
       }
@@ -112,7 +112,6 @@ export default function CourseDetail() {
       setShowEnrollmentModal(false)
       showAlert('Inscrição realizada com sucesso!', 'success')
     } catch (error) {
-      console.error('Erro ao se inscrever:', error)
       showAlert('Erro ao se inscrever no curso', 'error')
     }
   }
@@ -138,7 +137,6 @@ export default function CourseDetail() {
       setIsEnrolled(false)
       showAlert('Inscrição cancelada com sucesso!', 'success')
     } catch (error) {
-      console.error('Erro ao cancelar inscrição:', error)
       showAlert('Erro ao cancelar inscrição', 'error')
     }
   }
@@ -257,9 +255,14 @@ export default function CourseDetail() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-600">Conteúdo do curso será adicionado em breve.</p>
+              <p className="text-gray-600">Conteúdo do curso será adicionado em breve.              </p>
             )}
           </div>
+
+          {/* Sistema de Conversa */}
+          {isEnrolled && currentUser && (
+            <CourseChat courseId={id} />
+          )}
         </div>
 
         {/* Sidebar */}
@@ -275,7 +278,8 @@ export default function CourseDetail() {
                 </button>
                 <button
                   onClick={handleUnenrollClick}
-                  className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                  className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 transition-colors duration-200"
+                  style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
                 >
                   Cancelar Curso
                 </button>

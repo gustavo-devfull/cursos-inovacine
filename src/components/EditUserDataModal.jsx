@@ -98,7 +98,6 @@ export default function EditUserDataModal({ isOpen, onClose }) {
       showAlert('Dados atualizados com sucesso!', 'success')
       onClose()
     } catch (error) {
-      console.error('Erro ao atualizar dados:', error)
       showAlert('Erro ao atualizar dados. Tente novamente.', 'error')
     } finally {
       setSubmitting(false)
@@ -230,14 +229,16 @@ export default function EditUserDataModal({ isOpen, onClose }) {
                 type="button"
                 onClick={handleClose}
                 disabled={submitting}
-                className="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold transition-colors disabled:opacity-50"
+                className="text-gray-700 bg-gray-200 hover:bg-gray-300 transition-colors disabled:opacity-50"
+                style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 bg-primary-900 hover:bg-primary-800 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+                className="bg-primary-900 hover:bg-primary-800 text-white transition-colors disabled:opacity-50"
+                style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
               >
                 {submitting ? 'Salvando...' : 'Salvar Alterações'}
               </button>

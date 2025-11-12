@@ -1,4 +1,3 @@
-import { Dialog, Button } from '@material-tailwind/react'
 
 export default function ConfirmDialog({ 
   open, 
@@ -34,20 +33,24 @@ export default function ConfirmDialog({
           {message}
         </p>
         <div className="flex items-center justify-end space-x-3">
-          <Button
-            variant="text"
+          <button
             onClick={onClose}
-            className="text-gray-700 hover:bg-gray-100"
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 transition-colors duration-200"
+            style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
           >
             {cancelText}
-          </Button>
-          <Button
-            color={confirmColor}
+          </button>
+          <button
             onClick={handleConfirm}
-            className="bg-primary-900 hover:bg-primary-800"
+            className={`text-white transition-all ${
+              confirmColor === 'red' 
+                ? 'bg-gradient-to-r from-[#ED145B] to-[#b71646] hover:from-[#f2437a] hover:to-[#ED145B]'
+                : 'bg-gradient-to-r from-[#123F6D] to-[#0d2f4f] hover:from-[#255086] hover:to-[#123F6D]'
+            }`}
+            style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
           >
             {confirmText}
-          </Button>
+          </button>
         </div>
       </div>
     </div>

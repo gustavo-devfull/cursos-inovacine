@@ -82,10 +82,8 @@ export async function addSampleCourses() {
     const coursesRef = collection(db, 'courses')
     const promises = sampleCourses.map(course => addDoc(coursesRef, course))
     await Promise.all(promises)
-    console.log('Cursos de exemplo adicionados com sucesso!')
     return true
   } catch (error) {
-    console.error('Erro ao adicionar cursos:', error)
     return false
   }
 }

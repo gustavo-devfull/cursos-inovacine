@@ -42,7 +42,8 @@ export default function CourseCardWithCancel({ course, onCancel }) {
             e.stopPropagation()
             if (onCancel) onCancel()
           }}
-          className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+          className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 transition-colors duration-200"
+          style={{ borderRadius: '60px', fontSize: '16px', fontWeight: 500, border: 'none', padding: '10px 20px' }}
           title="Cancelar inscrição"
         >
           Cancelar Curso
