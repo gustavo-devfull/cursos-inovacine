@@ -35,13 +35,31 @@ export default function CourseChat({ courseId }) {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const messagesData = []
       snapshot.forEach((doc) => {
-        messagesData.push({ id: doc.id, ...doc.data() })
+        const messageData = { id: doc.id, ...doc.data() }
+        
+        // Se for instrutor, mostrar todas as mensagens
+        if (isInstructor) {
+          messagesData.push(messageData)
+        } else {
+          // Se for aluno, mostrar apenas:
+          // 1. Suas próprias mensagens
+          // 2. Mensagens do instrutor que são especificamente para ele (targetUserId === currentUser.uid)
+          // 3. Mensagens do instrutor sem targetUserId (mensagens gerais, se houver)
+          if (messageData.senderId === currentUser.uid) {
+            messagesData.push(messageData)
+          } else if (messageData.isInstructor) {
+            // Mostrar apenas se for para este aluno ou se não tiver destinatário específico
+            if (!messageData.targetUserId || messageData.targetUserId === currentUser.uid) {
+              messagesData.push(messageData)
+            }
+          }
+        }
       })
       setMessages(messagesData)
     })
 
     return () => unsubscribe()
-  }, [courseId, currentUser])
+  }, [courseId, currentUser, isInstructor])
 
   // Enviar mensagem
   async function handleSendMessage(e) {
@@ -52,6 +70,27 @@ export default function CourseChat({ courseId }) {
       setSending(true)
       const messagesRef = collection(db, 'courses', courseId, 'messages')
       
+      // Se for instrutor, identificar para qual aluno é a resposta
+      let targetUserId = null
+      if (isInstructor) {
+        // Buscar a última mensagem de aluno antes de enviar a resposta
+        try {
+          const messagesQuery = query(messagesRef, orderBy('timestamp', 'desc'), limit(20))
+          const messagesSnapshot = await getDocs(messagesQuery)
+          
+          for (const msgDoc of messagesSnapshot.docs) {
+            const msgData = msgDoc.data()
+            // Encontrar a primeira mensagem de aluno (não instrutor)
+            if (!msgData.isInstructor && msgData.senderId !== currentUser.uid) {
+              targetUserId = msgData.senderId
+              break
+            }
+          }
+        } catch (error) {
+          // Error finding target user
+        }
+      }
+
       const messageDoc = await addDoc(messagesRef, {
         text: newMessage.trim(),
         senderId: currentUser.uid,
@@ -59,7 +98,8 @@ export default function CourseChat({ courseId }) {
         senderEmail: currentUser.email,
         isInstructor: isInstructor,
         timestamp: Timestamp.now(),
-        courseId: courseId
+        courseId: courseId,
+        targetUserId: targetUserId // null para mensagens gerais ou quando aluno envia
       })
 
       // Criar notificação apenas se não for instrutor (para admin)
@@ -79,42 +119,48 @@ export default function CourseChat({ courseId }) {
           // Error creating notification
         }
       } else {
-        // Se for instrutor, criar notificação para todos os usuários que enviaram mensagens recentes
-        // (últimas 20 mensagens de usuários não instrutores)
+        // Se for instrutor, criar notificação apenas para o último aluno que enviou mensagem
+        // (antes da resposta do instrutor)
         try {
           const messagesRef = collection(db, 'courses', courseId, 'messages')
-          const messagesQuery = query(messagesRef, orderBy('timestamp', 'desc'), limit(50))
+          const messagesQuery = query(messagesRef, orderBy('timestamp', 'desc'), limit(20))
           const messagesSnapshot = await getDocs(messagesQuery)
           
-          // Coletar IDs únicos de usuários que enviaram mensagens (não instrutores)
-          const userIds = new Set()
+          // Encontrar a última mensagem de um aluno (não instrutor) antes da resposta do instrutor
+          let lastStudentMessage = null
+          
           for (const msgDoc of messagesSnapshot.docs) {
             const msgData = msgDoc.data()
-            // Pegar apenas mensagens de usuários (não instrutores) que foram enviadas antes da resposta do instrutor
-            if (!msgData.isInstructor && msgData.senderId !== currentUser.uid) {
-              userIds.add(msgData.senderId)
+            
+            // Se a mensagem for do próprio instrutor (pode ser a que acabamos de enviar ou outra anterior)
+            // continuar procurando
+            if (msgData.isInstructor || msgData.senderId === currentUser.uid) {
+              continue
             }
+            
+            // Encontrar a primeira mensagem de aluno (não instrutor) que não seja do instrutor
+            // Esta será a última mensagem de aluno antes da resposta do instrutor
+            lastStudentMessage = {
+              userId: msgData.senderId,
+              userName: msgData.senderName || 'Aluno'
+            }
+            break // Encontrou o último aluno que enviou mensagem, parar
           }
           
-          // Criar notificação para cada usuário único
-          if (userIds.size > 0) {
+          // Criar notificação apenas para esse aluno específico
+          if (lastStudentMessage) {
             const courseDoc = await getDoc(doc(db, 'courses', courseId))
             const courseName = courseDoc.exists() ? courseDoc.data().title : 'Curso'
             const instructorName = userData?.fullName || userData?.name || 'Instrutor'
             
-            // Criar notificações para todos os usuários que enviaram mensagens
-            const notificationPromises = Array.from(userIds).map(userId => 
-              createUserNotification(
-                courseId,
-                courseName,
-                userId,
-                instructorName,
-                messageDoc.id,
-                newMessage.trim()
-              )
+            await createUserNotification(
+              courseId,
+              courseName,
+              lastStudentMessage.userId,
+              instructorName,
+              messageDoc.id,
+              newMessage.trim()
             )
-            
-            await Promise.all(notificationPromises)
           }
         } catch (error) {
           // Error creating notification

@@ -21,19 +21,28 @@ export default function CourseDetail() {
 
   useEffect(() => {
     async function fetchCourse() {
+      if (!id) return
+      
       try {
         const courseDoc = await getDoc(doc(db, 'courses', id))
         if (courseDoc.exists()) {
           setCourse({ id: courseDoc.id, ...courseDoc.data() })
           
-          // Verificar se o usuário está inscrito
-          if (currentUser && userData?.enrolledCourses?.includes(id)) {
-            setIsEnrolled(true)
+          // Verificar se o usuário está inscrito (aguardar userData estar disponível)
+          if (currentUser && userData !== undefined) {
+            if (userData?.enrolledCourses?.includes(id)) {
+              setIsEnrolled(true)
+            } else {
+              setIsEnrolled(false)
+            }
+          } else if (!currentUser) {
+            setIsEnrolled(false)
           }
         } else {
           navigate('/cursos')
         }
       } catch (error) {
+        navigate('/cursos')
       } finally {
         setLoading(false)
       }

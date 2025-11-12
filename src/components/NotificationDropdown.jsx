@@ -75,7 +75,9 @@ export default function NotificationDropdown() {
       }
     })
 
-    return () => unsubscribe()
+    return () => {
+      if (unsubscribe) unsubscribe()
+    }
   }, [currentUser, isAdmin])
 
   async function toggleRead(notificationId, currentReadStatus) {

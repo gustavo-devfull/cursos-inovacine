@@ -29,6 +29,8 @@ function CourseContentPage() {
 
   useEffect(() => {
     async function fetchCourse() {
+      if (!courseId) return
+      
       try {
         const courseDoc = await getDoc(doc(db, 'courses', courseId))
         if (courseDoc.exists()) {
@@ -39,6 +41,11 @@ function CourseContentPage() {
           if (!currentUser) {
             navigate('/login')
             return
+          }
+
+          // Aguardar userData estar disponível
+          if (userData === undefined) {
+            return // Ainda carregando
           }
 
           if (!userData?.enrolledCourses?.includes(courseId)) {
@@ -61,17 +68,21 @@ function CourseContentPage() {
           }
 
           // Se houver aulas, buscar URL do vídeo da aula atual
-          if (courseData.lessons && courseData.lessons.length > 0) {
+          if (courseData.lessons && courseData.lessons.length > 0 && currentLessonIndex >= 0) {
             const currentLesson = courseData.lessons[currentLessonIndex]
             if (currentLesson?.videoUrl) {
               // Converter URL para formato de embed se necessário
               const embedUrl = convertToEmbedUrl(currentLesson.videoUrl)
               setVideoUrl(embedUrl)
+            } else {
+              setVideoUrl('')
             }
+          } else {
+            setVideoUrl('')
           }
 
           // Carregar progresso do usuário
-          if (currentUser) {
+          if (currentUser && userData) {
             const watched = await getWatchedLessons(currentUser.uid, courseId)
             setWatchedLessons(watched)
             const watchedStatus = await isLessonWatched(currentUser.uid, courseId, currentLessonIndex)
@@ -86,10 +97,10 @@ function CourseContentPage() {
       }
     }
 
-    if (courseId && currentUser && userData) {
+    if (courseId) {
       fetchCourse()
     }
-  }, [courseId, currentUser, userData, currentLessonIndex, navigate])
+  }, [courseId, currentUser, userData, currentLessonIndex, navigate, showAlert])
 
   async function goToLesson(index) {
     if (index >= 0 && index < (course?.lessons?.length || 0)) {
