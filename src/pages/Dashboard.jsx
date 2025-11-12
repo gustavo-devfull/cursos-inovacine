@@ -54,12 +54,13 @@ export default function Dashboard() {
       }
     }
 
-    if (currentUser && userData) {
+    if (currentUser && userData !== undefined) {
       fetchEnrolledCourses()
     } else if (!currentUser) {
       setEnrolledCourses([])
       setLoading(false)
     }
+    // Se userData ainda está undefined (carregando), não fazer nada
   }, [currentUser, userData])
 
   function handleUnenrollClick(courseId) {
